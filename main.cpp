@@ -4,11 +4,11 @@
 
 using namespace std;
 
-bool goNorth(int x, int y, Maze m, Creature c);
-bool goSouth(int x, int y, Maze m, Creature c);
-bool goWest(int x, int y, Maze m, Creature c);
-bool goEast(int x, int y, Maze m, Creature c);
-bool traverse(Maze maze, Creature creature, bool** &visit);
+bool goNorth(Maze &m, Creature &c, bool** &visit);
+bool goSouth(Maze &m, Creature &c, bool** &visit);
+bool goWest(Maze &m, Creature &c, bool** &visit);
+bool goEast(Maze &m, Creature &c, bool** &visit);
+bool traverse(Maze &m, Creature &c, bool** &visit);
 
 int main()
 {
@@ -33,9 +33,134 @@ int main()
         }
     }
 
+
+
     return 0;
 }
-bool traverse(Maze maze, Creature creature, bool** &visit){
+bool traverse(Maze &m, Creature &c, bool** &visit){
+    return false;
+}
 
-return false;
+bool goNorth(Maze &m, Creature &c, bool** &visit){
+    bool success =false;
+
+    if(m.getMaze()[c.getX()][c.getY() - 1] != 'x' && !&visit[c.getX()][c.getY() - 1]){// no wall and not visited
+            c.push(c.getX(),c.getY() - 1);
+            visit[c.getX()][c.getY()] = true;
+         if(c.getX() == m.getEndX() && c.getY() == m.getEndY() ){
+                success = true;
+                return success;
+            }
+            else{
+                success = goNorth(m, c, visit);
+                if(!success){
+                    success = goWest(m, c, visit);
+                    if(!success){
+                        success = goEast(m, c, visit);
+                        if(!success){
+                            c.pop();
+                            success = false;
+                            goSouth(m, c, visit);
+                        }
+                    }
+                }
+            }
+    }
+    else{
+        success = false;
+    }
+    return success;
+}
+
+bool goWest(Maze &m, Creature &c, bool** &visit){
+    bool success =false;
+
+    if(m.getMaze()[c.getX() + 1][c.getY()] != 'x' && !&visit[c.getX() + 1][c.getY()]){// no wall and not visited
+            c.push(c.getX() + 1, c.getY());
+            visit[c.getX()][c.getY()] = true;
+         if(c.getX() == m.getEndX() && c.getY() == m.getEndY() ){
+                success = true;
+                return success;
+            }
+            else{
+                success = goNorth(m, c, visit);
+                if(!success){
+                    success = goWest(m, c, visit);
+                    if(!success){
+                        success = goEast(m, c, visit);
+                        if(!success){
+                            c.pop();
+                            success = false;
+                            goSouth(m, c, visit);
+                        }
+                    }
+                }
+            }
+    }
+    else{
+        success = false;
+    }
+    return success;
+}
+
+bool goEast(Maze &m, Creature &c, bool** &visit){
+bool success =false;
+    if(m.getMaze()[c.getX() - 1][c.getY()] != 'x' && !&visit[c.getX() - 1][c.getY()]){// no wall and not visited
+            c.push(c.getX() - 1,c.getY());
+            visit[c.getX()][c.getY()] = true;
+         if(c.getX() == m.getEndX() && c.getY() == m.getEndY() ){
+                success = true;
+                return success;
+            }
+            else{
+                success = goNorth(m, c, visit);
+                if(!success){
+                    success = goWest(m, c, visit);
+                    if(!success){
+                        success = goEast(m, c, visit);
+                        if(!success){
+                            c.pop();
+                            success = false;
+                            goSouth(m, c, visit);
+                        }
+                    }
+                }
+            }
+    }
+    else{
+        success = false;
+    }
+    return success;
+}
+
+bool goSouth(Maze &m, Creature &c, bool** &visit){
+
+     bool success =false;
+
+    if(m.getMaze()[c.getX()][c.getY() + 1] != 'x' && !&visit[c.getX()][c.getY() + 1]){// no wall and not visited
+            c.push(c.getX(),c.getY() + 1);
+            visit[c.getX()][c.getY()] = true;
+         if(c.getX() == m.getEndX() && c.getY() == m.getEndY() ){
+                success = true;
+                return success;
+            }
+            else{
+                success = goNorth(m, c, visit);
+                if(!success){
+                    success = goWest(m, c, visit);
+                    if(!success){
+                        success = goEast(m, c, visit);
+                        if(!success){
+                            c.pop();
+                            success = false;
+                            goSouth(m, c, visit);
+                        }
+                    }
+                }
+            }
+    }
+    else{
+        success = false;
+    }
+    return success;
 }
