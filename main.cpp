@@ -41,6 +41,16 @@ bool traverse(Maze &m, Creature &c, bool** &visit){
     return false;
 }
 
+bool checkLocation(Maze &m, Creature &c, bool** &visit, int xloc, int yloc)
+{
+    bool valid=true;
+    if(m.getmaze()[xloc][yloc]=='x')
+        valid=false;
+    if(visit[xloc][yloc])
+        valid=false;
+    return valid;
+}
+
 bool goNorth(Maze &m, Creature &c, bool** &visit){
     bool success =false;
 
